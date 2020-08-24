@@ -30,6 +30,21 @@
 				"_repo.scripts.init"
 			],
 			"problemMatcher": []
+		},
+		{
+			"label": "Reset stage",
+			"type": "shell",
+			"linux": {
+				"command": "python"
+			},
+			"windows": {
+				"command": "py"
+			},
+			"args": [
+				"-m",
+				"_repo.scripts.soft_reset"
+			],
+			"problemMatcher": []
 		}
 	]
 }
