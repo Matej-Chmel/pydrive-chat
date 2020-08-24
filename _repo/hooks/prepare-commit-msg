@@ -1,0 +1,10 @@
+#!/bin/sh
+echo HOOK: prepare-commit-msg called.
+
+py -m _repo.scripts.format_message $1 || python -m _repo.scripts.format_message $1
+
+if [[ $? != 0 ]]; then
+	py -m _repo.scripts.soft_reset || python -m _repo.scripts.sort_reset
+	echo HOOK: prepare-commit-msg failed.
+	exit 1
+fi

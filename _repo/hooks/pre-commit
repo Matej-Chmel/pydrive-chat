@@ -1,0 +1,12 @@
+#!/bin/sh
+echo HOOK: pre-commit called.
+
+py -m _repo.scripts.update_version || python -m _repo.scripts.update_version
+
+if [[ $? != 0 ]]; then
+	py -m _repo.scripts.soft_reset || python -m _repo.scripts.sort_reset
+	echo HOOK: pre-commit failed.
+	exit 1
+fi
+
+git add _repo/data/version.txt
