@@ -5,7 +5,23 @@
 			"name": "Debug",
 			"type": "python",
 			"request": "launch",
-			"module": "src.main"
+			"module": "src.main",
+			"args": [
+				"${input:arg_1}"
+			]
+		}
+	],
+	"inputs": [
+		{
+			"id": "arg_1",
+			"type": "pickString",
+			"description": "Choose an argument:",
+			"options": [
+				"",
+				"v",
+				"--version"
+			],
+			"default": ""
 		}
 	]
 }

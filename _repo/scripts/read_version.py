@@ -1,24 +1,21 @@
-from ast import literal_eval as eval
 from base64 import b64decode
-from _repo import fdata_
+from _repo import fdata_, REPO
 
 def read_github_version():
-	path, file = fdata_('info.pydef')
 	try:
 		from requests import get, codes
-		with file:
-			info = eval(file.read())
 	except ImportError:
 		return print("Module 'requests' not found.")
-	except OSError:
-		return print(f'File {path} not found.')
+
+	if not REPO.read_info():
+		return None
 
 	url = (
-		f"https://api.github.com/repos/{info['user']}/"
-		f"{info['repo_name']}/contents/_repo/data/version.txt"
+		f"https://api.github.com/repos/{REPO.USER}/"
+		f"{REPO.NAME}/contents/_repo/data/version.txt"
 	)
 
-	if info['private']:
+	if REPO.PRIVATE:
 		path, file = fdata_('.token')
 		try:
 			with file:

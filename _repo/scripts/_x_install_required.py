@@ -1,4 +1,6 @@
-from _repo import freq_, PYTHON, system_call
+from _repo import freq_, REPO, spec, system_call
+
+PYTHON = 'py' if spec.WINDOWS else 'python'
 
 def install():
 	path, file = freq_('any.req')

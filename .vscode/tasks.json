@@ -17,6 +17,22 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "Display version",
+			"type": "shell",
+			"linux": {
+				"command": "python"
+			},
+			"windows": {
+				"command": "py"
+			},
+			"args": [
+				"-m",
+				"src.main",
+				"v"
+			],
+			"problemMatcher": []
+		},
+		{
 			"label": "Init repo",
 			"type": "shell",
 			"linux": {

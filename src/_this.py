@@ -1,4 +1,4 @@
-from _repo import read_local_version
+from _repo import read_local_version, REPO
 
 VERSION = None
 
@@ -7,3 +7,5 @@ def get_version():
 	if VERSION is None:
 		VERSION = read_local_version()
 	return VERSION
+
+REPO.read_info()

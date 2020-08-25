@@ -1,6 +1,6 @@
-from _repo import cd, REPO_ROOT, system_call
+from _repo import cd, REPO, system_call
 
-cd(REPO_ROOT)
+cd(REPO.ROOT)
 
 system_call(
 	'git reset --soft HEAD~1',

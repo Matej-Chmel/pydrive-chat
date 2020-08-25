@@ -2,7 +2,7 @@ from _repo import fdata, read_github_version, read_local_version
 
 version = read_github_version()
 
-if version is None:
+if not version:
 	print('Reading latest version from local file.')
 	version = read_local_version()
 
