@@ -56,7 +56,7 @@ def ensure_item(title: str, mime_type=None, parents=None, trashed=False):
 		file.Upload()
 		return file
 
-def log_into_drive():
+def log_into_drive(cmdline=False):
 	global gauth
 	creds_path = res_('creds.json')
 
@@ -64,16 +64,19 @@ def log_into_drive():
 		gauth.LoadCredentialsFile(creds_path)
 	else:
 		try:
-			gauth.LocalWebserverAuth()
+			if cmdline:
+				gauth.CommandLineAuth()
+			else:
+				gauth.LocalWebserverAuth()
 			gauth.SaveCredentialsFile(creds_path)
 		except:
 			return None
 
 	return Drive(gauth)
 
-def login_and_init():
+def login_and_init(cmdline=False):
 	global CHAT_LOG, drive
-	drive = log_into_drive()
+	drive = log_into_drive(cmdline)
 	if drive is None:
 		return False
 
