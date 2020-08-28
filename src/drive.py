@@ -1,5 +1,7 @@
+from datetime import datetime
 from io import BytesIO
 from pathlib import Path
+from time import altzone, daylight, localtime, timezone
 from pydrive.auth import GoogleAuth, AuthenticationRejected
 from pydrive.drive import GoogleDrive as Drive, GoogleDriveFile as File
 from pydrive.files import FileNotUploadedError
@@ -11,6 +13,8 @@ GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = res_('client_secrets.json')
 CHAT_LOG: File = None
 FILE_TYPE = 'application/vnd.google-apps.file'
 FOLDER_TYPE = 'application/vnd.google-apps.folder'
+LAST_READ: datetime = None
+UTC_OFFSET_SECS = -(altzone if daylight and localtime().tm_isdst > 0 else timezone)
 
 drive: Drive = None
 gauth = GoogleAuth()
@@ -38,7 +42,6 @@ def ensure_item(title: str, mime_type=None, parents=None, trashed=False):
 		query += f' and trashed={str(trashed).lower()}'
 
 	try:
-		print('*** QUERY ***\n' + query + '\n\n')
 		return drive.ListFile({'q': query}).GetList()[0]
 	except IndexError:
 		metadata = {'title': title}
@@ -95,3 +98,20 @@ def overwrite_log(text=None):
 
 def read_log():
 	return CHAT_LOG.GetContentString()
+
+def read_if_modified():
+	global LAST_READ, LINES_READ
+
+	def was_modified():
+		modified_at = when_modified()
+		if LAST_READ < modified_at:
+			LAST_READ = modified_at
+			return True
+		return False
+
+	if LAST_READ is None or was_modified():
+		return CHAT_LOG.GetContentString()
+	return None
+
+def when_modified():
+	return datetime.strptime(CHAT_LOG['modifiedDate'], '%Y-%m-%dT%H:%M:%S.%fZ')

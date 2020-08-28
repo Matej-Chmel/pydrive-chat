@@ -1,7 +1,8 @@
-from .drive import append_to_log, drive, login_and_init, overwrite_log, read_log
-from ._this import ENDL, get_version, PROJECT
+from .drive import *
+from ._this import get_version, PROJECT
 
 actions = {}
+lines_read = 0
 nickname: str = None
 
 # decorator
@@ -19,7 +20,7 @@ def help(args = None):
 
 @command
 def login(args = None):
-	print(f"Login {'aborted' if not login_and_init() or not name() else 'successful'}")
+	print(f"Login {'aborted' if not login_and_init() or not name(args) else 'successful'}")
 
 @command
 def name(args: list = None):
@@ -35,12 +36,29 @@ def name(args: list = None):
 			return True
 
 @command
+def new(args = None):
+	global lines_read
+
+	content = read_if_modified()
+	if content is None:
+		return print('*** NO UPDATES ***')
+
+	lines = content.splitlines()
+	if lines_read == len(lines):
+		return print('*** NO UPDATES ***')
+	if lines_read > len(lines):
+		lines_read = len(lines)
+		return print(f'*** CHAT RECENTLY EMPTIED ***{ENDL}{ENDL.join(lines)}')
+	print(ENDL.join(lines[lines_read:]))
+	lines_read = len(lines)
+
+@command
 def read(args = None):
 	content = read_log()
 	print(content if content else '*** EMPTY ***')
 
 @command
-def reset(args = None):
+def empty(args = None):
 	overwrite_log('')
 	print('Chat emptied.')
 
@@ -52,3 +70,7 @@ def say(args: list):
 @command
 def version(args = None):
 	print(f'Current version is {get_version()}.')
+
+@command
+def when(args = None):
+	print(when_modified().strftime('%d.%m.%Y\t%H:%M:%S.%f')[:-3])
