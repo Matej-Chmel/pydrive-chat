@@ -6,6 +6,7 @@ from pydrive.auth import GoogleAuth, AuthenticationRejected
 from pydrive.drive import GoogleDrive as Drive, GoogleDriveFile as File
 from pydrive.files import FileNotUploadedError
 from requests import patch
+from .auth import gauth
 from ._this import ENDL, res_
 
 GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = res_('client_secrets.json')
@@ -17,10 +18,8 @@ LAST_READ: datetime = None
 UTC_OFFSET_SECS = -(altzone if daylight and localtime().tm_isdst > 0 else timezone)
 
 drive: Drive = None
-gauth = GoogleAuth()
 
 def empty_contents_of_(file):
-	global gauth
 	patch(
 		f"https://www.googleapis.com/upload/drive/v3/files/{file['id']}?uploadType=multipart",
 		headers={'Authorization': f"Bearer {gauth.credentials.token_response['access_token']}"},
@@ -56,27 +55,23 @@ def ensure_item(title: str, mime_type=None, parents=None, trashed=False):
 		file.Upload()
 		return file
 
-def log_into_drive(cmdline=False):
-	global gauth
+def log_into_drive():
 	creds_path = res_('creds.json')
 
 	if Path(creds_path).is_file():
 		gauth.LoadCredentialsFile(creds_path)
 	else:
 		try:
-			if cmdline:
-				gauth.CommandLineAuth()
-			else:
-				gauth.LocalWebserverAuth()
+			gauth.LocalWebserverAuth()
 			gauth.SaveCredentialsFile(creds_path)
 		except:
 			return None
 
 	return Drive(gauth)
 
-def login_and_init(cmdline=False):
+def login_and_init():
 	global CHAT_LOG, drive
-	drive = log_into_drive(cmdline)
+	drive = log_into_drive()
 	if drive is None:
 		return False
 

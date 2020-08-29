@@ -22,11 +22,6 @@ def help(args = None):
 def login(args = None):
 	print(f"Login {'aborted' if not login_and_init() or not name(args) else 'successful'}")
 
-# authenticate from command line
-@command
-def llogin(args = None):
-	print(f"Login {'aborted' if not login_and_init(True) or not name(args) else 'successful'}")
-
 @command
 def name(args: list = None):
 	global nickname

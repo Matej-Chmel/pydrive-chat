@@ -11,10 +11,9 @@ def ask_for_command(prompt):
 	print()
 	try:
 		chosen_cmd = actions[cmdname]
+		chosen_cmd(args)
 	except KeyError:
 		print(f"Command '{cmdname}' not recognized.")
-	else:
-		chosen_cmd(args)
 
 def main():
 	if len(argv) >= 2:
