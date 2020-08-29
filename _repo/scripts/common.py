@@ -57,9 +57,9 @@ def fdata_(filename, mode='r'):
 def freq_(filename, mode='r'):
 	return fopen_(join(REPO.REQ, filename), mode)
 
-def system_call(text, success_message=None, alt=None):
+def system_call(text, success_message=None, alt=None, shell=None):
 	try:
-		output = execute(text.split())
+		output = execute(text.split(), shell=shell) if shell else execute(text.split())
 		if success_message is not None:
 			print(success_message)
 		return output.decode()
