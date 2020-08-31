@@ -6,7 +6,7 @@ from ._this import ENDL
 IS_TERMUX = (
 	spec.LINUX and
 	system_call('uname -o').strip() == 'Android' and
-	system_call('command -v termux-open-url', shell=True)
+	bool(system_call('command -v termux-open-url', shell=True))
 )
 
 if IS_TERMUX:

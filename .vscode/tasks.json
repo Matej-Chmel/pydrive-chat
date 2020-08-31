@@ -41,8 +41,12 @@
 				"src.main",
 				"login=tower"
 			],
-			"problemMatcher": []
-		}
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
 		{
 			"label": "Init repo",
 			"type": "shell",

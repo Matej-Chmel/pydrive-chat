@@ -1,7 +1,7 @@
 from ast import literal_eval as eval
 from os import chdir as cd
 from os.path import abspath, dirname, join, pardir, realpath
-from subprocess import CalledProcessError, check_output as execute
+from subprocess import CalledProcessError, check_output
 from sys import exit
 
 class REPO:
@@ -57,9 +57,9 @@ def fdata_(filename, mode='r'):
 def freq_(filename, mode='r'):
 	return fopen_(join(REPO.REQ, filename), mode)
 
-def system_call(text, success_message=None, alt=None, shell=None):
+def system_call(text, success_message=None, alt=None, shell=False):
 	try:
-		output = execute(text.split(), shell=shell) if shell else execute(text.split())
+		output = check_output(text.split(), shell=shell)
 		if success_message is not None:
 			print(success_message)
 		return output.decode()

@@ -1,3 +1,4 @@
+from .auth import IS_TERMUX
 from .drive import *
 from ._this import get_version, PROJECT
 
@@ -66,6 +67,10 @@ def empty(args = None):
 def say(args: list):
 	append_to_log(f"{nickname}: {' '.join(args)}")
 	print('Success.')
+
+@command
+def termux(args = None):
+	print('You are running this from Termux.' if IS_TERMUX else 'You are using other platform than Termux.')
 
 @command
 def version(args = None):
