@@ -66,12 +66,10 @@ def display_cmd(text):
 
 def system_call(text, success_message=None, alt=None, shell=False):
 	try:
-		if shell:
-			output = Popen(
-				text if type(text) is str else ' '.join(text),
-				shell=True, stderr=PIPE, stdin=PIPE, stdout=PIPE
-			).communicate()[0]
-		output = check_output(text.split() if type(text) is str else text)
+		output = (
+			Popen(text, shell=True, stderr=PIPE, stdin=PIPE, stdout=PIPE).communicate()[0] if shell
+			else check_output(text.split() if type(text) is str else text)
+		)
 		if success_message is not None:
 			print(success_message)
 		return output.decode()
