@@ -1,7 +1,7 @@
 from ast import literal_eval as eval
 from os import chdir as cd
 from os.path import abspath, dirname, join, pardir, realpath
-from subprocess import CalledProcessError, check_output
+from subprocess import CalledProcessError, check_output, PIPE, Popen
 from sys import exit
 
 class REPO:
