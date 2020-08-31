@@ -4,6 +4,8 @@ from os.path import abspath, dirname, join, pardir, realpath
 from subprocess import CalledProcessError, check_output, PIPE, Popen
 from sys import exit
 
+N = '\n'
+
 class REPO:
 	_INFO_STATUS = DATA = NAME = PRIVATE = REQ = ROOT = USER = None
 	@staticmethod
