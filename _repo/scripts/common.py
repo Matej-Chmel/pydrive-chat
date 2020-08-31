@@ -57,20 +57,32 @@ def fdata_(filename, mode='r'):
 def freq_(filename, mode='r'):
 	return fopen_(join(REPO.REQ, filename), mode)
 
+def display_cmd(text):
+	if type(text) is list:
+		text = ' '.join(text)
+	return f'{text[:cmd_width]}...' if len(text) > 30 else text
+
 def system_call(text, success_message=None, alt=None, shell=False):
 	try:
-		output = check_output(text.split(), shell=shell)
+		if shell:
+			output = Popen(
+				text if type(text) is str else ' '.join(text),
+				shell=True, stderr=PIPE, stdin=PIPE, stdout=PIPE
+			).communicate()[0]
+		output = check_output(text.split() if type(text) is str else text)
 		if success_message is not None:
 			print(success_message)
 		return output.decode()
 	except CalledProcessError as e:
 		if alt is not None:
 			print(f"Command {text} didn't work, trying an alternative.")
-			system_call(alt, success_message)
-		else:
-			print(
-				f'Something went wrong.\n'
-				f'Error code: {e.returncode}\n'
-				f'More info: {e.output.decode()}\n'
-			)
-			exit(1)
+			return system_call(alt, success_message)
+		print(
+			f"Something went wrong when executing:{N}"
+			f"{display_cmd(text)}{N}{N}"
+			f'Error code: {e.returncode}{N}'
+			f'Output: {e.output.decode()}'
+		)
+	except FileNotFoundError:
+		print(f"The command:{N}{display_cmd(text)}{N}doesn't work without a shell.")
+	exit(1)
