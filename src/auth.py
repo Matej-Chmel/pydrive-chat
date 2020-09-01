@@ -1,13 +1,13 @@
+'''
+Authentication process that differs for devices running Termux.
+
+This file is licensed under the Apache License, Version 2.0.
+Full text is available in the ../LICENSE_PyDrive file.
+'''
+
 import socket
 from pydrive.auth import AuthenticationError, CheckAuth, ClientRedirectHandler, ClientRedirectServer, GoogleAuth
-from _repo import system_call, spec
-from ._this import ENDL
-
-IS_TERMUX = (
-	spec.LINUX and
-	system_call('uname -o').strip() == 'Android' and
-	bool(system_call('command -v termux-open-url', shell=True))
-)
+from ._this import ENDL, IS_TERMUX
 
 if IS_TERMUX:
 	class TermuxGoogleAuth(GoogleAuth):

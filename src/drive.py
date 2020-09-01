@@ -1,10 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 from pathlib import Path
 from time import altzone, daylight, localtime, timezone
 from pydrive.auth import GoogleAuth, AuthenticationRejected
 from pydrive.drive import GoogleDrive as Drive, GoogleDriveFile as File
-from pydrive.files import FileNotUploadedError
 from requests import patch
 from .auth import gauth
 from ._this import ENDL, res_
@@ -112,4 +111,4 @@ def read_if_modified():
 	return None
 
 def when_modified():
-	return datetime.strptime(CHAT_LOG['modifiedDate'], '%Y-%m-%dT%H:%M:%S.%fZ')
+	return datetime.strptime(CHAT_LOG['modifiedDate'], '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(seconds=UTC_OFFSET_SECS)

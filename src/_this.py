@@ -1,6 +1,11 @@
-from _repo import join, read_local_version, REPO
+from _repo import join, read_local_version, REPO, spec, system_call
 
 ENDL = '\n'
+IS_TERMUX = (
+	spec.LINUX and
+	system_call('uname -o').strip() == 'Android' and
+	bool(system_call('command -v termux-open-url', shell=True))
+)
 VERSION = None
 
 def fres(filename, mode='r'):
