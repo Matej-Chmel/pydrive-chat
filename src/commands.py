@@ -12,6 +12,11 @@ def command(func):
 	return func
 
 @command
+def empty(args = None):
+	overwrite_log('')
+	print('Chat emptied.')
+
+@command
 def exit(args = None):
 	PROJECT.running = False
 
@@ -57,11 +62,6 @@ def new(args = None):
 def read(args = None):
 	content = read_log()
 	print(content if content else '*** EMPTY ***')
-
-@command
-def empty(args = None):
-	overwrite_log('')
-	print('Chat emptied.')
 
 @command
 def say(args: list):

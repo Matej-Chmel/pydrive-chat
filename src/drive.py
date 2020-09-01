@@ -76,7 +76,7 @@ def login_and_init():
 
 	app_data = ensure_item('AppData', FOLDER_TYPE)
 	app_folder = ensure_item('pydrive-chat', FOLDER_TYPE, app_data)
-	CHAT_LOG = ensure_item('chat_log_1.txt', parents=app_folder)
+	CHAT_LOG = ensure_item('chat_log.txt', parents=app_folder)
 
 	return True
 
