@@ -9,7 +9,7 @@ An example repository that shows how to share messages between devices via Googl
 
 In addition, the targeted platform must run Python 3.8 or higher.
 
-## Installing
+## Installation
 1. Clone the repo.
 2. Initialize the repo by following one of the options:
 	1. If you use VS Code, run the [Init repo](.vscode/tasks.json#L51) task.

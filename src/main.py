@@ -1,6 +1,6 @@
 from sys import argv
 from ._this import get_version, PROJECT, REPO
-from .drive import login_and_init
+from .drive import login_and_init, setup_gauth
 import src.commands as commands
 from src.commands import actions, login, not_recognized
 
@@ -16,13 +16,21 @@ def ask_for_command(prompt):
 		not_recognized(cmdname)
 
 def main():
-	if len(argv) >= 2:
-		cmd = argv[1]
-		if cmd in ['v', '--version']:
-			print(f'{REPO.NAME} version {get_version()}.')
-			return
-		if cmd.startswith(LOGIN_ARG):
-			login([cmd[cmd.index(LOGIN_ARG) + len(LOGIN_ARG):]])
+	try:
+		try:
+			option = argv[1]
+			if option in ['v', '--version']:
+				return print(f'{REPO.NAME} version {get_version()}.')
+			setup_gauth()
+			if option.startswith(LOGIN_ARG):
+				login([option[option.index(LOGIN_ARG) + len(LOGIN_ARG):]])
+		except IndexError:
+			setup_gauth()
+	except FileNotFoundError:
+		return print(
+			"File 'res/client_secrets.json' is missing.\n"
+			"Please refer to Installation section in 'README.md' in the root of this repo."
+		)
 
 	ask_for_command('Enter command: ')
 	while PROJECT.running:

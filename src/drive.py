@@ -8,8 +8,6 @@ from requests import patch
 from .auth import gauth
 from ._this import ENDL, res_
 
-GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = res_('client_secrets.json')
-
 CHAT_LOG: File = None
 FILE_TYPE = 'application/vnd.google-apps.file'
 FOLDER_TYPE = 'application/vnd.google-apps.folder'
@@ -17,6 +15,12 @@ LAST_READ: datetime = None
 UTC_OFFSET_SECS = -(altzone if daylight and localtime().tm_isdst > 0 else timezone)
 
 drive: Drive = None
+
+def setup_gauth():
+	path = res_('client_secrets.json')
+	if not Path(path).is_file():
+		raise FileNotFoundError
+	GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = path
 
 def empty_contents_of_(file):
 	patch(
