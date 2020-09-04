@@ -2,7 +2,7 @@ from sys import argv
 from ._this import get_version, PROJECT, REPO
 from .drive import login_and_init
 import src.commands as commands
-from src.commands import actions, login
+from src.commands import actions, login, not_recognized
 
 LOGIN_ARG = 'login='
 
@@ -11,9 +11,9 @@ def ask_for_command(prompt):
 	print()
 	try:
 		chosen_cmd = actions[cmdname]
-		chosen_cmd(args)
+		chosen_cmd[0](args)
 	except KeyError:
-		print(f"Command '{cmdname}' not recognized.")
+		not_recognized(cmdname)
 
 def main():
 	if len(argv) >= 2:

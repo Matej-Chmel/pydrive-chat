@@ -7,28 +7,52 @@ lines_read = 0
 nickname: str = None
 
 # decorator
-def command(func):
-	actions[func.__name__] = func
-	return func
+def command(*description):
+	def _decorator(func):
+		actions[func.__name__] = func, '\n'.join(description)
+		return func
+	return _decorator
 
-@command
+def not_recognized(cmdname):
+	print(f"Command '{cmdname}' not recognized.")
+
+@command('Clears all content from the chat log and uploads it to the Drive.')
 def empty(args = None):
 	overwrite_log('')
 	print('Chat emptied.')
 
-@command
+@command('Closes this app.')
 def exit(args = None):
 	PROJECT.running = False
 
-@command
+@command(
+	'If no argument is supplied, displays list of available commands.',
+	'Else it displays description of command passed as an argument.'
+)
 def help(args = None):
-	print(f'Available commands:{ENDL}{ENDL.join(sorted([name for name in actions]))}')
+	if not args:
+		return print(f'Available commands:{ENDL}{ENDL.join(sorted([name for name in actions]))}')
+	try:
+		print(actions[args[0]][1])
+	except KeyError:
+		not_recognized(args[0])
 
-@command
+@command(
+	'Logs you into your Drive.',
+	'If you log for the first time, app prompts you for an account that will be used.',
+	'After successful login, you will prompted for a nickname.',
+	'If you supply name as an argument, app will attempt to set that as your nickname.'
+)
 def login(args = None):
-	print(f"Login {'aborted' if not login_and_init() or not name(args) else 'successful'}")
+	global nickname
+	print(f"Login {'successful' if login_and_init() and (nickname or name(args)) else 'aborted'}")
 
-@command
+@command(
+	"Let's you choose your nickname that will be visible in the chat log when you post messages.",
+	'If no argument is passed, app prompts you for a new name.',
+	'By passing argument, you can set the name directly.',
+	"Nickname can contain whitespace, but ':', newlines and empty nicknames aren't allowed."
+)
 def name(args: list = None):
 	global nickname
 	new_name = ' '.join(args) if args else input('Choose your nickname: ')
@@ -41,7 +65,7 @@ def name(args: list = None):
 			print(f'Nickname set to {(nickname := new_name)}.')
 			return True
 
-@command
+@command('Displays last updates from the chat log that were not yet read in this session.')
 def new(args = None):
 	global lines_read
 
@@ -58,24 +82,27 @@ def new(args = None):
 	print(ENDL.join(lines[lines_read:]))
 	lines_read = len(lines)
 
-@command
+@command('Displays the entire chat log.')
 def read(args = None):
 	content = read_log()
 	print(content if content else '*** EMPTY ***')
 
-@command
+@command(
+	'Adds new entry to the chat log labeled with your nickname and containing the text supplied as an argument.',
+	'The text can contain whitespace.'
+)
 def say(args: list):
 	append_to_log(f"{nickname}: {' '.join(args)}")
 	print('Success.')
 
-@command
+@command('Tells you if the app detected you are running it on Termux or not.')
 def termux(args = None):
 	print('You are running this from Termux.' if IS_TERMUX else 'You are using other platform than Termux.')
 
-@command
+@command('Displays the current version number.')
 def version(args = None):
 	print(f'Current version is {get_version()}.')
 
-@command
+@command("Displays the chat log's date of last modification corrected for the local timezone and daylight saving time.")
 def when(args = None):
 	print(when_modified().strftime('%d.%m.%Y\t%H:%M:%S.%f')[:-3])

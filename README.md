@@ -39,19 +39,25 @@ The program is controlled by a command-line interface so here is a list of avail
 	- Closes the program.
 - `help`
 	- Prints names of available commands.
+- `help {name}`
+	- Prints description of command supplied as an argument.
 - `login`
-	- Logs you into a Drive. If you didn't login before, it opens a window in your browser from which you can choose an Google account that will be used.
-	- If you supply name as an argument, this name will be set as your nickname for this session.
-	- Else you will prompted for a nickname.
+	- Logs you into a Drive.
+	- If you didn't login before, it opens a window in your browser from which you can choose an Google account that will be used.
+	- After successful login, you will be prompted for a nickname.
+- `login {name}`
+	- After successful login, the app will attempt to set the name as your nickname.
 - `name`
 	- Let's you change your nickname with a prompt.
-	- You can supply the nickname as an argument directly and skip the prompt.
+- `name {text}`
+	- Skips the prompt and attempts to set text as your nickname.
 - `new`
-	- Queries last updates from the chat log that were not yet read in this session.
+	- Queries last updates from the chat log that were not yet read in this session and displays them.
 - `read`
 	- Reads the entire chat log.
 - `say {text}`
-	- Adds new entry to the chat log labeled with your nickname and containing the text supplied as argument. The text can contain whitespace.
+	- Adds new entry to the chat log labeled with your nickname and containing the text supplied as argument.
+	- The text can contain whitespace.
 - `termux`
 	- Tells you if the app detected you are running it on Termux or not.
 - `version`
