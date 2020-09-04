@@ -22,16 +22,11 @@ In addition, the targeted platform must run Python 3.8 or higher.
 	2. If you can run batch or shell scripts, run one from the [_repo/run](_repo/run/) directory.
 	3. Or run the [src/main.py](src/main.py) directly with `python -m src.main`.
 
-## Optional arguments
-- `v` or `--version`
-	- Shows current version number of your local repo and closes the program.
-- `login={name}` where you substitute `{name}` with your nickname.
-	- Runs command `login {name}` on startup.
-
 ## Usage
 The app creates a `AppData/pydrive-chat/chat_log.txt` file in your Drive that saves the messages. I will refer to this file as *chat log* in the rest of this text.
 
 The program is controlled by a command-line interface so here is a list of available commands and their usage.
+The text in curly brackets are identifiers for arguments. Arguments are separated by a space.
 
 - `empty`
 	- Deletes all entries from the chat log.
@@ -64,6 +59,12 @@ The program is controlled by a command-line interface so here is a list of avail
 	- Displays the current version number.
 - `when`
 	- Displays the chat log's date of last modification corrected for the local timezone and daylight saving time.
+
+## Optional arguments
+- `v` or `--version`
+	- Shows current version number of your local repo and closes the program.
+- `login={name}`
+	- Runs command `login {name}` on startup.
 
 ## Licensing
 
